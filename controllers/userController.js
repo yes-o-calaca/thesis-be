@@ -64,7 +64,7 @@ const userController = {
       };
       const name = first_name + " " + last_name;
       const activation_token = createToken.activation(data);
-      const url = `http://localhost:5173/activate?token=${activation_token}`;
+      const url = `https://yes-o-calaca.onrender.com/activate?token=${activation_token}`;
       sendMail.sendEmailRegister(email, password, name, url);
       res.status(200).json({ msg: "Please check your email for verification" });
     } catch (error) {
@@ -150,7 +150,7 @@ const userController = {
 
       const data = { email };
       const activation_token = createToken.activation(data);
-      const url = `http://localhost:5173/activate?token=${activation_token}`;
+      const url = `https://yes-o-calaca.onrender.com/activate?token=${activation_token}`;
       // sendMail.sendEmailReverify(url);
       res.status(200).json({ msg: "Please check your email for verification" });
     } catch (error) {
@@ -253,7 +253,7 @@ const userController = {
 
       const ac_token = createToken.access({ id: user.id });
 
-      const url = `http://localhost:5173/reset?token=${ac_token}`;
+      const url = `https://yes-o-calaca.onrender.com/reset?token=${ac_token}`;
       const name = user.first_name + " " + user.last_name;
       sendMail.sendEmailReset(email, url, name);
       return res.status(200).json({ msg: "Please check your email" });
