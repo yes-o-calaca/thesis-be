@@ -36,7 +36,7 @@ app.use(cors());
 app.use(bodyparser.json());
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://yes-o-calaca.onrender.com",
 };
 
 // Create the HTTP server and socket.io instance
