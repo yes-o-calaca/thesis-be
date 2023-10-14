@@ -85,6 +85,7 @@ const sendEmailRegister = (to, password_unhash, name, url) => {
       .button-container button a {
         text-decoration: none;
         color: white;
+        padding:2px;
       }
       h1,
       h2,
