@@ -82,5 +82,31 @@ const virtualPostController = {
       return error;
     }
   },
+  getVirtualPostSingle: async (req, res) => {
+    try {
+      const allVPostIn = await VirtualPostInfo.find();
+      res.status(200).json(allVPostIn);
+    } catch (error) {
+      res.status(500).json({ msg: err.message });
+    }
+  },
+  updateVirtualPostSingle: async (req, res) => {
+    const { info, title, description, type } = req.body;
+    try {
+      console.log(info, title, description, type);
+      await VirtualPostInfo.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          info,
+          title,
+          description,
+          type,
+        }
+      );
+      return res.status(200).json({ msg: "Updated successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
 };
 module.exports = virtualPostController;

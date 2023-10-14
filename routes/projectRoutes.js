@@ -17,5 +17,6 @@ route.patch(
 );
 
 route.patch("/api/update-project/:id", auth, projectController.updateProj);
+route.patch("/api/update-status/:id", auth, projectController.updateStatus);
 
 module.exports = route;

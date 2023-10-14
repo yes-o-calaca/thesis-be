@@ -15,6 +15,13 @@ route.delete(
   virtualPostController.removeVirtualPost
 );
 
+route.get("/api/v-post-info", auth, virtualPostController.getVirtualPostSingle);
+
+route.patch(
+  "/api/update-info-post/:id",
+  auth,
+  virtualPostController.updateVirtualPostSingle
+);
 route.delete(
   "/api/auth/remove-vpost-details/:id",
   auth,

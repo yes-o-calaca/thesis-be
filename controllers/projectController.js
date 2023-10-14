@@ -130,6 +130,16 @@ const projectController = {
     }
   },
 
+  updateStatus: async (req, res) => {
+    try {
+      const { status } = req.body;
+      await Project.findByIdAndUpdate(req.params.id, { status: status });
+      return res.status(200).json({ msg: "Applied successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   getPost: async () => {
     try {
       const allProject = await Project.find()
