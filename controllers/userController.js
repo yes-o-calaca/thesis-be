@@ -59,6 +59,7 @@ const userController = {
         age,
         password: hashPassword,
         address,
+        contact,
         bday,
         gender,
       };
