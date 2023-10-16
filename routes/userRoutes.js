@@ -16,6 +16,7 @@ route.post("/api/auth/forgot_pass", userController.forgot);
 route.patch("/api/auth/reset_pass", auth, userController.reset);
 route.get("/api/auth/signout", userController.signout);
 route.patch("/api/auth/update-ic", auth, userController.update_profile_pic);
+route.patch("/api/auth/update-details-profile", auth, userController.update_pesonal);
 
 //for skills
 route.post("/api/auth/add-skill", auth, skillController.newSkill);

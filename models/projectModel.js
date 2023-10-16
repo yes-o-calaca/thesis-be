@@ -7,11 +7,9 @@ const projectSchema = new mongoose.Schema(
     },
     project_description: {
       type: String,
-      trim: true,
     },
     project_article: {
       type: String,
-      trim: true,
     },
     project_image: {
       type: String,

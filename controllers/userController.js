@@ -158,6 +158,7 @@ const userController = {
       res.status(500).json({ msg: error.message });
     }
   },
+
   activate: async (req, res) => {
     try {
       //get token
@@ -172,6 +173,7 @@ const userController = {
         age,
         password,
         address,
+        contact,
         bday,
         gender,
       } = user;
@@ -187,6 +189,7 @@ const userController = {
         last_name,
         age,
         password,
+        contact,
         address,
         bday,
         gender,
@@ -197,6 +200,7 @@ const userController = {
       res.status(500).json({ msg: err.message });
     }
   },
+
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -288,6 +292,7 @@ const userController = {
       return res.status(400).json({ success: false });
     }
   },
+
   update_role: async (req, res) => {
     const { role } = req.body;
     try {
@@ -298,6 +303,21 @@ const userController = {
       return res.status(500).json({ msg: err.message });
     }
   },
+
+  update_pesonal: async (req, res) => {
+    const { first_name, last_name, contact, address, age } = req.body;
+    try {
+      await User.findOneAndUpdate(
+        { _id: req.user.id },
+        { first_name, last_name, contact, address, age }
+      );
+
+      return res.status(200).json({ msg: "Updated successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
   update_skill: async (req, res) => {
     try {
       const { skills } = req.body;
