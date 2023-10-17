@@ -32,7 +32,7 @@ const organizationController = {
         air_division_commitee_4,
       } = req.body;
 
-      //todo validator
+      console.log(org_year);
 
       const sk = await Organization.findOne({ org_year });
       if (sk)
@@ -45,6 +45,26 @@ const organizationController = {
         secretary,
         treasurer,
         auditor,
+        public_information_officer_1,
+        public_information_officer_2,
+        protocol_officer_1,
+        protocol_officer_2,
+        water_division_commitee_1,
+        water_division_commitee_2,
+        water_division_commitee_3,
+        water_division_commitee_4,
+        land_division_commitee_1,
+        land_division_commitee_2,
+        land_division_commitee_3,
+        land_division_commitee_4,
+        fire_division_commitee_1,
+        fire_division_commitee_2,
+        fire_division_commitee_3,
+        fire_division_commitee_4,
+        air_division_commitee_1,
+        air_division_commitee_2,
+        air_division_commitee_3,
+        air_division_commitee_4,
       });
 
       await newOrg.save();
@@ -73,6 +93,8 @@ const organizationController = {
         ?.populate("treasurer")
         ?.populate("auditor")
         ?.populate("public_information_officer_1")
+        ?.populate("public_information_officer_2")
+        ?.populate("protocol_officer_1")
         ?.populate("protocol_officer_2")
         ?.populate("water_division_commitee_1")
         ?.populate("water_division_commitee_2")

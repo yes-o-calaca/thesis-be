@@ -91,42 +91,38 @@ const userController = {
           age,
         } = user;
 
-        if (
-          !email ||
-          !first_name ||
-          !middle_name ||
-          !last_name ||
-          !address ||
-          !bday ||
-          !gender ||
-          !contact ||
-          !age
-        )
-          return res.status(400).json({ msg: "Please fill in all the fields" });
+        // if (
+        //   !email ||
+        //   !first_name ||
+        //   !last_name ||
+        //   !bday ||
+        //   !contact
+        //   // !age
+        // )
+        //   return res.status(400).json({ msg: "Please fill in all the fields" });
 
-        if (!validateEmail(email))
-          return res
-            .status(400)
-            .json({ msg: "Please enter a valid email address" });
+        // if (!validateEmail(email))
+        //   return res
+        //     .status(400)
+        //     .json({ msg: "Please enter a valid email address" });
 
         const existingUser = await User.findOne({ email });
 
         if (existingUser)
           return res.status(400).json({ msg: "Email is already registered" });
       }
+      const password = Math.random().toString(36).slice(-8);
+      const salt = await bcrypt.genSalt();
+      const hashPassword = await bcrypt.hash(password, salt);
 
       // Create an array of new users to be inserted
       const newUsers = users.map((user) => {
-        const password = Math.random().toString(36).slice(-8);
-        // const salt = await bcrypt.genSalt();
-        // const hashPassword = await bcrypt.hash(password, salt);
-
         return {
           ...user,
-          password,
+          password: hashPassword,
         };
       });
-
+     
       // Use insertMany to insert multiple users at once
       const insertedUsers = await User.insertMany(newUsers);
 
