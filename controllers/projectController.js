@@ -1,5 +1,8 @@
 const Project = require("../models/projectModel");
-
+const User = require("../models/userModel");
+const sendMail = require("../helpers/sendMail");
+const mongoose = require("mongoose");
+const Feedback = require("../models/feedbackModel");
 const projectController = {
   newProj: async (req, res) => {
     try {
@@ -17,6 +20,7 @@ const projectController = {
         type,
       } = req.body;
       const volunteers = [];
+      const feedbacks = [];
 
       //todo validator
 
@@ -33,6 +37,7 @@ const projectController = {
         age,
         gender,
         type,
+        feedbacks,
       });
 
       await newProj.save();
@@ -129,11 +134,54 @@ const projectController = {
       return res.status(400).json({ success: false });
     }
   },
-
   updateStatus: async (req, res) => {
     try {
       const { status } = req.body;
-      await Project.findByIdAndUpdate(req.params.id, { status: status });
+      const projectId = req.params.id;
+
+      const result = await Project.findByIdAndUpdate(projectId, {
+        status: status,
+      }).populate("volunteers");
+
+      if (!result) {
+        return res.status(404).json({ msg: "Project not found" });
+      }
+
+      const volunteers = result.volunteers.map((volunteer) => volunteer._id);
+
+      const uniqueUserIds = new Set();
+
+      result.volunteers.forEach((volunteer) => {
+        uniqueUserIds.add(volunteer._id.toString());
+      });
+
+      const volunteerIds = Array.from(uniqueUserIds);
+
+      const users = await User.find({
+        _id: { $in: volunteerIds },
+      });
+
+      const userEmails = new Set();
+
+      users.forEach((user) => {
+        try {
+          // Check if the user's email has been processed already
+          if (!userEmails.has(user.email)) {
+            userEmails.add(user.email);
+
+            const emailContent = `Dear ${user.first_name}, the project with Title of  ${result.project_title} has been updated to ${status}.`;
+            sendMail.sendUpdateProjectStatus(
+              user.email,
+              "Project Status Update",
+              emailContent
+            );
+            console.log(emailContent);
+          }
+        } catch (error) {
+          console.error("Error sending email:", error);
+        }
+      });
+
       return res.status(200).json({ msg: "Applied successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -148,6 +196,33 @@ const projectController = {
       return allProject;
     } catch (error) {
       return error;
+    }
+  },
+
+  newFeedback: async (data) => {
+    try {
+      const { feedback, id } = data;
+
+      const newFeedback = new Feedback({
+        feedback,
+      });
+
+      const feedbackData = await newFeedback.save();
+      await Project.findByIdAndUpdate(id, {
+        $push: { feedbacks: feedbackData._id },
+      });
+      return feedbackData;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getFeedback: async () => {
+    try {
+      const allFeedback = await Feedback.find();
+      return allFeedback;
+    } catch (error) {
+      throw error;
     }
   },
 };

@@ -34,9 +34,10 @@ const projectSchema = new mongoose.Schema(
     },
     skill_required: [{ type: mongoose.Schema.ObjectId, ref: "Skill" }],
     volunteers: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+    feedbacks: [{ type: mongoose.Schema.ObjectId, ref: "Feedback" }],
     status: { type: String, default: "pending" },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Project", projectSchema);

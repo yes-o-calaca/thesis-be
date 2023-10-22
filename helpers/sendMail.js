@@ -31,7 +31,7 @@ const sendEmailRegister = (to, password_unhash, name, url) => {
     },
   });
   const mailOptions = {
-    from: "Yes-O Organizations",
+    from:"Yes-O-Calaca.org",
     to: to,
     password_unhash: password_unhash,
     url: url,
@@ -168,7 +168,7 @@ const sendEmailReset = (to, url, name) => {
     },
   });
   const mailOptions = {
-    from: ADMIN_EMAIL,
+    from:"Yes-O-Calaca.org",
     to: to,
     subject: "RESET PASSWORD",
     html: `
@@ -277,6 +277,122 @@ const sendEmailReset = (to, url, name) => {
   });
 };
 
+const sendUpdateProjectStatus = (to, url, emailContent) => {
+  oauth2client.setCredentials({
+    refresh_token: G_REFRESH_TOKEN,
+  });
+  const accessToken = oauth2client.getAccessToken();
+  const smtpTransport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: ADMIN_EMAIL,
+      clientId: G_CLIENT_ID,
+      clientSecret: G_CLIENT_SECRET,
+      refreshToken: G_REFRESH_TOKEN,
+      accessToken,
+    },
+  });
+  const mailOptions = {
+    from:"Yes-O-Calaca.org",
+    to: to,
+    subject: "PROJECT UPDATE",
+    html: `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Email Template</title>
+        <style>
+          body {
+            width: 100vw;
+            background-color: #d1d5db;
+            font-family: "Roboto", sans-serif;
+            font-size: 11px;
+            color: black;
+          }
+          table.container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: white;
+          }
+          table.wrapper {
+            width: 100%;
+            padding: 0 15px;
+          }
+          table.card {
+            width: 100%;
+            padding: 20px;
+          }
+          span {
+            color: #15803d;
+          }
+          .button-container {
+            text-align: center;
+          }
+          button {
+            padding: 1em 2em;
+            background-color: #047857;
+            border: 0;
+            margin-top: 30px;
+            cursor: pointer;
+          }
+          button:hover {
+            background-color: #15803d;
+          }
+          .button-container button a {
+            text-decoration: none;
+            color: white;
+          }
+          h1,
+          h2,
+          p {
+            margin: 10px 0;
+            color: black !important;
+          }
+          h2,
+          p {
+            font-weight: normal;
+          }
+          .heading {
+            height: 60px;
+            background-color: #15803d;
+          }
+        </style>
+      </head>
+      <body>
+        <table class="container">
+          <tr>
+            <td class="heading"></td>
+          </tr>
+          <tr>
+            <td class="wrapper">
+              <table class="card">
+                <tr>
+                
+                  </td>
+                </tr>
+                <tr>
+${emailContent}
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+`,
+  };
+
+  smtpTransport.sendMail(mailOptions, (err, info) => {
+    if (err) return { err };
+    return info;
+  });
+};
+
 const sendemailApproveDonation = (to, name) => {
   oauth2client.setCredentials({
     refresh_token: G_REFRESH_TOKEN,
@@ -294,7 +410,7 @@ const sendemailApproveDonation = (to, name) => {
     },
   });
   const mailOptions = {
-    from: ADMIN_EMAIL,
+    from:"Yes-O-Calaca.org",
     to: to,
     subject: "RESET PASSWORD",
     html: `
@@ -401,4 +517,5 @@ module.exports = {
   sendEmailRegister,
   sendEmailReset,
   sendemailApproveDonation,
+  sendUpdateProjectStatus,
 };

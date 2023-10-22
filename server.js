@@ -60,8 +60,6 @@ mongoose
     // app.use(express.static("client/build"));
 
     io.on("connection", (socket) => {
-      console.log("A user connected");
-
       socket.on("getAllUser", async () => {
         try {
           const allUser = await userController.getAllUser();
@@ -140,6 +138,26 @@ mongoose
           socket.emit("getDonationSuccess", { allDonation });
         } catch (error) {
           socket.emit("getDonationSuccess", { error });
+        }
+      });
+
+      socket.on("newFeedback", async (data) => {
+        try {
+          const newFeedback = await projectController.newFeedback(data);
+
+          socket.emit("newFeedbackSuccess", { newFeedback });
+        } catch (error) {
+          socket.emit("newFeedbackError", { error });
+        }
+      });
+
+      socket.on("getFeedback", async () => {
+        try {
+          const allFeedback = await projectController.getFeedback();
+
+          socket.emit("getFeedbackSuccess", { allFeedback });
+        } catch (error) {
+          socket.emit("getFeedbackError", { error });
         }
       });
     });
