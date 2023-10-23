@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema(
       type: Date,
     },
     skills: [{ type: mongoose.Schema.ObjectId, ref: "Skill" }],
+    badge: [{ type: mongoose.Schema.ObjectId, ref: "Badge" }],
     gender: {
       type: String,
     },

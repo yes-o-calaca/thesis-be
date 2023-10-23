@@ -3,6 +3,8 @@ const User = require("../models/userModel");
 const sendMail = require("../helpers/sendMail");
 const mongoose = require("mongoose");
 const Feedback = require("../models/feedbackModel");
+const Badge = require("../models/badgeModel");
+
 const projectController = {
   newProj: async (req, res) => {
     try {
@@ -134,6 +136,7 @@ const projectController = {
       return res.status(400).json({ success: false });
     }
   },
+
   updateStatus: async (req, res) => {
     try {
       const { status } = req.body;
@@ -221,6 +224,44 @@ const projectController = {
     try {
       const allFeedback = await Feedback.find();
       return allFeedback;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  addBadge: async (req, res) => {
+    try {
+      const { badgeIcon, name } = req.body;
+
+      const newBadge = new Badge({
+        badgeIcon,
+        name,
+      });
+
+      await newBadge.save();
+
+      res.status(200).json({ msg: "Badge Updated Successfully" });
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
+    }
+  },
+
+  updateUserBadge: async (req, res) => {
+    const { _id } = req.body;
+    try {
+      await User.findByIdAndUpdate(_id, {
+        $push: { badge: req.params._id },
+      });
+      res.status(200).json({ msg: "User Badge Updated Successfully" });
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
+    }
+  },
+
+  getBadge: async () => {
+    try {
+      const allBadge = await Badge.find();
+      return allBadge;
     } catch (error) {
       throw error;
     }

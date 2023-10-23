@@ -122,7 +122,7 @@ const userController = {
           password: hashPassword,
         };
       });
-     
+
       // Use insertMany to insert multiple users at once
       const insertedUsers = await User.insertMany(newUsers);
 
@@ -238,7 +238,8 @@ const userController = {
     try {
       const user = await User.findById(req.user.id)
         .select("-password")
-        .populate("skills");
+        .populate("skills")
+        ?.populate("badge");
       // console.log(user);
       return res.status(200).json(user);
     } catch (err) {

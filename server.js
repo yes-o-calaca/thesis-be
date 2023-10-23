@@ -36,7 +36,7 @@ app.use(cors());
 app.use(bodyparser.json());
 
 const corsOptions = {
-  origin: "https://yes-o-calaca.onrender.com",
+  origin: "http://localhost:5173",
 };
 
 // Create the HTTP server and socket.io instance
@@ -158,6 +158,16 @@ mongoose
           socket.emit("getFeedbackSuccess", { allFeedback });
         } catch (error) {
           socket.emit("getFeedbackError", { error });
+        }
+      });
+
+      socket.on("getBadge", async () => {
+        try {
+          const allBadge = await projectController.getBadge();
+
+          socket.emit("getBadgeSuccess", { allBadge });
+        } catch (error) {
+          socket.emit("getBadgeError", { error });
         }
       });
     });
