@@ -36,7 +36,7 @@ app.use(cors());
 app.use(bodyparser.json());
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://yes-o-calaca.onrender.com",
 };
 
 // Create the HTTP server and socket.io instance
@@ -168,6 +168,24 @@ mongoose
           socket.emit("getBadgeSuccess", { allBadge });
         } catch (error) {
           socket.emit("getBadgeError", { error });
+        }
+      });
+
+      socket.on("getAnnouncement", async () => {
+        try {
+          const allAnnouncement = await awardController.getAnnouncement();
+          socket.emit("getAnnouncementSuccess", { allAnnouncement });
+        } catch (error) {
+          socket.emit("getAnnouncementError", { error });
+        }
+      });
+
+      socket.on("getWelcome", async () => {
+        try {
+          const allWelcome = await settingController.getWelcome();
+          socket.emit("getWelcomeSuccess", { allWelcome });
+        } catch (error) {
+          socket.emit("getWelcomeError", { error });
         }
       });
     });

@@ -6,4 +6,7 @@ const awardController = require("../controllers/awardController");
 route.post("/api/add-award", auth, awardController.newAward);
 route.delete("/api/remove-award/:id", auth, awardController.removeAward);
 
+//announcement
+route.post("/api/add-announcement", auth, awardController.newAnnouncement);
+
 module.exports = route;

@@ -250,7 +250,7 @@ const projectController = {
     const { _id } = req.body;
     try {
       await User.findByIdAndUpdate(_id, {
-        $push: { badge: req.params._id },
+        $push: { badge: req.params.id },
       });
       res.status(200).json({ msg: "User Badge Updated Successfully" });
     } catch (err) {

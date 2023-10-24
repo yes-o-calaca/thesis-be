@@ -5,6 +5,7 @@ const organizationController = {
     try {
       const {
         org_year,
+        adviser,
         president,
         vicepresident,
         secretary,
@@ -39,6 +40,7 @@ const organizationController = {
         return res.status(400).json({ msg: "Organization this Year Exist" });
 
       const newOrg = new Organization({
+        adviser,
         org_year,
         president,
         vicepresident,
@@ -87,6 +89,7 @@ const organizationController = {
   getOrg: async () => {
     try {
       const allOrg = await Organization.find()
+      ?.populate("adviser")
         ?.populate("president")
         ?.populate("vicepresident")
         ?.populate("secretary")

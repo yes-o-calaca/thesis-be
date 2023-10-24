@@ -3,6 +3,7 @@ const orgSchema = new mongoose.Schema({
   org_year: {
     type: String,
   },
+  adviser: { type: mongoose.Schema.ObjectId, ref: "User" },
   president: { type: mongoose.Schema.ObjectId, ref: "User" },
   vicepresident: { type: mongoose.Schema.ObjectId, ref: "User" },
   secretary: { type: mongoose.Schema.ObjectId, ref: "User" },

@@ -1,4 +1,5 @@
 const Award = require("../models/awardsModel");
+const Announcement = require("../models/announcementModel");
 
 const awardController = {
   newAward: async (req, res) => {
@@ -35,6 +36,34 @@ const awardController = {
     try {
       const allAward = await Award.find();
       return allAward;
+    } catch (error) {
+      return error;
+    }
+  },
+
+  newAnnouncement: async (req, res) => {
+    try {
+      const { title, announcement_image } = req.body;
+
+      //todo validator
+
+      const newAnnouncement = new Announcement({
+        title,
+        announcement_image,
+      });
+
+      await newAnnouncement.save();
+      //scucess
+      res.status(200).json({ msg: "Announcement Added Successfully" });
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
+    }
+  },
+
+  getAnnouncement: async () => {
+    try {
+      const allAnnouncement = await Announcement.find();
+      return allAnnouncement;
     } catch (error) {
       return error;
     }

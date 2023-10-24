@@ -18,6 +18,6 @@ route.patch(
   paymentController.updateDonation
 );
 
-// route.get("/api/auth/get-payment", auth, userController.getPayment);
+ route.post("/api/add-welcome", auth, settingController.newWelcome);
 
 module.exports = route;
