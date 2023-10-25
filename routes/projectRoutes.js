@@ -21,5 +21,10 @@ route.patch("/api/update-status/:id", auth, projectController.updateStatus);
 
 route.post("/api/new-badge", auth, projectController.addBadge);
 route.patch("/api/give-badge/:id", auth, projectController.updateUserBadge);
+route.patch(
+  "/api/give-badge-all/:id",
+  auth,
+  projectController.updateUserBadgesMant
+);
 
 module.exports = route;

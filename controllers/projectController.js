@@ -195,7 +195,8 @@ const projectController = {
     try {
       const allProject = await Project.find()
         ?.populate("skill_required")
-        .populate("volunteers");
+        ?.populate("volunteers")
+        ?.populate("feedbacks");
       return allProject;
     } catch (error) {
       return error;
@@ -253,6 +254,21 @@ const projectController = {
         $push: { badge: req.params.id },
       });
       res.status(200).json({ msg: "User Badge Updated Successfully" });
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
+    }
+  },
+
+  updateUserBadgesMant: async (req, res) => {
+    const { _ids } = req.body;
+    try {
+      await User.updateMany(
+        { _id: { $in: _ids } },
+        {
+          $push: { badge: req.params.id },
+        }
+      );
+      res.status(200).json({ msg: "User Badges Updated Successfully" });
     } catch (err) {
       res.status(500).json({ msg: err.message });
     }
