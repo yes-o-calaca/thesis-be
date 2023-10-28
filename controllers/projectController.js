@@ -196,7 +196,13 @@ const projectController = {
       const allProject = await Project.find()
         ?.populate("skill_required")
         ?.populate("volunteers")
-        ?.populate("feedbacks");
+        ?.populate({
+          path: "feedbacks",
+          populate: {
+            path: "feedbackUser",
+          },
+        });
+
       return allProject;
     } catch (error) {
       return error;
@@ -205,10 +211,11 @@ const projectController = {
 
   newFeedback: async (data) => {
     try {
-      const { feedback, id } = data;
+      const { feedback, id, userId } = data;
 
       const newFeedback = new Feedback({
         feedback,
+        feedbackUser: userId,
       });
 
       const feedbackData = await newFeedback.save();

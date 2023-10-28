@@ -7,6 +7,7 @@ const feedbackSchema = new mongoose.Schema(
     rating: {
       type: Number,
     },
+    feedbackUser: { type: mongoose.Schema.ObjectId, ref: "User" },
   },
   { timestamp: true }
 );
