@@ -193,7 +193,8 @@ const projectController = {
 
   getPost: async () => {
     try {
-      const allProject = await Project.find()
+      let allProject = await Project.find()
+
         ?.populate("skill_required")
         ?.populate("volunteers")
         ?.populate({
@@ -202,6 +203,8 @@ const projectController = {
             path: "feedbackUser",
           },
         });
+
+      allProject = allProject.reverse();
 
       return allProject;
     } catch (error) {
