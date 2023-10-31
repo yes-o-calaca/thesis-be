@@ -188,6 +188,15 @@ mongoose
           socket.emit("getWelcomeError", { error });
         }
       });
+
+      socket.on("getPartner", async () => {
+        try {
+          const allPartners = await settingController.getPartner();
+          socket.emit("getPartnerSuccess", { allPartners });
+        } catch (error) {
+          socket.emit("getPartnerError", { error });
+        }
+      });
     });
 
     server.listen(process.env.PORT || 3000, () => {

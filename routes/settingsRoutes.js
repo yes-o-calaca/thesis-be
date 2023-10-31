@@ -18,6 +18,8 @@ route.patch(
   paymentController.updateDonation
 );
 
- route.post("/api/add-welcome", auth, settingController.newWelcome);
+//partner
+route.post("/api/add-welcome", auth, settingController.newWelcome);
+route.post("/api/add-partners", auth, settingController.newPartner);
 
 module.exports = route;
