@@ -26,6 +26,9 @@ const projectSchema = new mongoose.Schema(
     age: {
       type: String,
     },
+    address: {
+      type: String,
+    },
     gender: {
       type: String,
     },

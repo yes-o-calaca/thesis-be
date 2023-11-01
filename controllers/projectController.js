@@ -18,6 +18,7 @@ const projectController = {
         volunteer_number,
         skill_required,
         age,
+        address,
         gender,
         type,
       } = req.body;
@@ -37,6 +38,7 @@ const projectController = {
         skill_required,
         volunteers,
         age,
+        address,
         gender,
         type,
         feedbacks,
@@ -89,6 +91,7 @@ const projectController = {
         volunteer_number,
         skill_required,
         age,
+        address,
         gender,
         type,
       } = req.body;
@@ -104,6 +107,7 @@ const projectController = {
         date_end,
         volunteer_number,
         age,
+        address,
         gender,
         type,
       };
