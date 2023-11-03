@@ -36,7 +36,7 @@ app.use(cors());
 app.use(bodyparser.json());
 
 const corsOptions = {
-  origin: "https://yes-o-calaca.onrender.com",
+  origin: "https://yes-o-calaca-shs.com",
 };
 
 // Create the HTTP server and socket.io instance
