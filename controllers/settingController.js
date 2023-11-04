@@ -41,7 +41,7 @@ const settingController = {
 
       await newAnnouncement.save();
       //scucess
-      res.status(200).json({ msg: "Announcement Added Successfully" });
+      res.status(200).json({ msg: "Welcome Message Added Successfully" });
     } catch (err) {
       res.status(500).json({ msg: err.message });
     }
