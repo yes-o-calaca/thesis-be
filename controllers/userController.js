@@ -176,7 +176,9 @@ const userController = {
 
       const check = await User.findOne({ email });
       if (check)
-        res.status(400).json({ msg: "This username is already registered" });
+        return res
+          .status(400)
+          .json({ msg: "This username is already registered" });
 
       const newUser = new User({
         email,
@@ -238,7 +240,7 @@ const userController = {
     try {
       const user = await User.findById(req.user.id)
         .select("-password")
-        .populate("skills")
+        ?.populate("skills")
         ?.populate("badge");
       // console.log(user);
       return res.status(200).json(user);
@@ -374,7 +376,7 @@ const userController = {
 
   getAllUser: async () => {
     try {
-      const allUser = await User.find();
+      const allUser = await User.find()?.populate("skills")?.populate("badge");
       return allUser;
     } catch (error) {
       return error;

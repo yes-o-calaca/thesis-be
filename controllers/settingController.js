@@ -41,7 +41,7 @@ const settingController = {
 
       await newAnnouncement.save();
       //scucess
-      res.status(200).json({ msg: "Welcome Message Added Successfully" });
+      res.status(200).json({ msg: "Announcement Added Successfully" });
     } catch (err) {
       res.status(500).json({ msg: err.message });
     }
@@ -60,7 +60,16 @@ const settingController = {
 
       await newPartner.save();
       //scucess
-      res.status(200).json({ msg: "Welcome Message Added Successfully" });
+      res.status(200).json({ msg: "Partner Added Successfully" });
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
+    }
+  },
+
+  removePartner: async (req, res) => {
+    try {
+      await Partner.findByIdAndRemove(req.params.id);
+      res.status(200).json({ msg: "Partner Removed" });
     } catch (err) {
       res.status(500).json({ msg: err.message });
     }

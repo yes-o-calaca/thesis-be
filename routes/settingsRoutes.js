@@ -21,5 +21,6 @@ route.patch(
 //partner
 route.post("/api/add-welcome", auth, settingController.newWelcome);
 route.post("/api/add-partners", auth, settingController.newPartner);
+route.delete("/api/remove-partners/:id", auth, settingController.removePartner);
 
 module.exports = route;
