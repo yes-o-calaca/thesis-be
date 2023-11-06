@@ -31,7 +31,7 @@ const sendEmailRegister = (to, password_unhash, name, url) => {
     },
   });
   const mailOptions = {
-    from:"Yes-O-Calaca.org",
+    from: "Yes-O-Calaca.org",
     to: to,
     password_unhash: password_unhash,
     url: url,
@@ -168,7 +168,7 @@ const sendEmailReset = (to, url, name) => {
     },
   });
   const mailOptions = {
-    from:"Yes-O-Calaca.org",
+    from: "Yes-O-Calaca.org",
     to: to,
     subject: "RESET PASSWORD",
     html: `
@@ -294,7 +294,7 @@ const sendUpdateProjectStatus = (to, url, emailContent) => {
     },
   });
   const mailOptions = {
-    from:"Yes-O-Calaca.org",
+    from: "Yes-O-Calaca.org",
     to: to,
     subject: "PROJECT UPDATE",
     html: `
@@ -410,9 +410,9 @@ const sendemailApproveDonation = (to, name) => {
     },
   });
   const mailOptions = {
-    from:"Yes-O-Calaca.org",
+    from: "Yes-O-Calaca.org",
     to: to,
-    subject: "RESET PASSWORD",
+    subject: "Donation Update",
     html: `
     <!DOCTYPE html>
     <html lang="en">

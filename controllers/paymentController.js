@@ -73,7 +73,7 @@ const paymentController = {
   },
 
   updateDonation: async (req, res) => {
-    const user = req.body;
+    const {user} = req.body;
     try {
       await Donation.findByIdAndUpdate(req.params.id, {
         approved: true,
@@ -81,7 +81,10 @@ const paymentController = {
       const email = user.email;
       const name = user.first_name + " " + user.last_name;
 
-      sendemailApproveDonation(email, name);
+      const ress = sendemailApproveDonation(email, name);
+      console.log(ress);
+
+      console.log(user);
       return res.status(200).json({ msg: "Donation Approved" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
