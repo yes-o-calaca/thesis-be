@@ -60,6 +60,15 @@ const awardController = {
     }
   },
 
+  removeAnnouncement: async (req, res) => {
+    try {
+      await Announcement.findByIdAndRemove(req.params.id);
+      return res.status(200).json({ success: true });
+    } catch (error) {
+      return res.status(400).json({ success: false });
+    }
+  },
+
   getAnnouncement: async () => {
     try {
       const allAnnouncement = await Announcement.find();
