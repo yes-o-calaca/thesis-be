@@ -239,7 +239,6 @@ const userController = {
   info: async (req, res) => {
     try {
       const user = await User.findById(req.user.id)
-        .select("-password")
         ?.populate("skills")
         ?.populate("badge");
       // console.log(user);
