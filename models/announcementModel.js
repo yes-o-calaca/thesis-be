@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 const announcementSchema = new mongoose.Schema({
+  project: { type: mongoose.Schema.ObjectId, ref: "Project" },
   title: {
     type: String,
   },

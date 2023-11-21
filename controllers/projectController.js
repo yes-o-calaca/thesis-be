@@ -4,6 +4,8 @@ const sendMail = require("../helpers/sendMail");
 const mongoose = require("mongoose");
 const Feedback = require("../models/feedbackModel");
 const Badge = require("../models/badgeModel");
+const Notification = require("../models/notificationModel");
+const VolunteerRole = require("../models/rolesModel");
 
 const projectController = {
   newProj: async (req, res) => {
@@ -59,9 +61,95 @@ const projectController = {
         { $addToSet: { volunteers: req.user.id } },
         { new: true }
       );
+      completed_project_image;
+
+      const notification = new Notification({
+        project: req.params.id,
+        volunteer: req.user.id,
+        message: "You have been added as a volunteer to the project.",
+      });
+
+      await notification.save();
+
       return res.status(200).json({ msg: "Applied successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  addCompletedProjects: async (req, res) => {
+    try {
+      const { completed_project_image } = req.body;
+      await Project.findByIdAndUpdate(req.params.id, {
+        completed_project_image,
+      });
+
+      return res.status(200).json({ msg: "Images Added Successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  addRoleProjects: async (req, res) => {
+    try {
+      const { role, volunteerId } = req.body;
+
+      const isRole = await VolunteerRole.findOne({
+        project: req.params.id,
+        volunteer: volunteerId,
+      });
+
+      if (isRole) {
+        await VolunteerRole.findOneAndUpdate(
+          {
+            project: req.params.id,
+            volunteer: volunteerId,
+          },
+          { role }
+        );
+      } else {
+        const vol = new VolunteerRole({
+          project: req.params.id,
+          volunteer: volunteerId,
+          role,
+        });
+        await vol.save();
+      }
+      const user = await User.findOne({ _id: volunteerId });
+      const name = user.first_name + " " + user.last_name;
+      const email = user.email;
+
+      sendMail.sendNotifRole(email, name, role);
+      return res.status(200).json({ msg: "Role Added successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  getVolunteerNotif: async () => {
+    try {
+      const allNotif = await Notification.find()?.populate("project");
+      return allNotif;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  patchVolunteerNotif: async (req, res) => {
+    const { volunteerIds } = req.body;
+    const projectId = req.params.id;
+
+    try {
+      const result = await Notification.updateMany(
+        {
+          project: projectId,
+          volunteer: { $in: volunteerIds },
+        },
+        { $set: { read: true } }
+      );
+      res.status(200).json({ msg: "" });
+    } catch (err) {
+      res.status(500).json({ msg: err.message });
     }
   },
 
@@ -73,6 +161,17 @@ const projectController = {
         { $pull: { volunteers: volunteer_id } },
         { new: true }
       );
+
+      await Notification.findOneAndRemove({
+        project: req.params.id,
+        volunteer: volunteer_id,
+      });
+
+      await VolunteerRole.findOneAndRemove({
+        project: req.params.id,
+        volunteer: volunteer_id,
+      });
+
       return res.status(200).json({ msg: "Removed successfully" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -218,9 +317,10 @@ const projectController = {
 
   newFeedback: async (data) => {
     try {
-      const { feedback, id, userId } = data;
+      const { feedback, id, userId, feedbackAnswers } = data;
 
       const newFeedback = new Feedback({
+        feedbackAnswers,
         feedback,
         feedbackUser: userId,
       });

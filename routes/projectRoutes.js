@@ -26,5 +26,16 @@ route.patch(
   auth,
   projectController.updateUserBadgesMant
 );
+route.patch(
+  "/api/update-notif/:id",
+  auth,
+  projectController.patchVolunteerNotif
+);
 
+route.patch("/api/new-role/:id", auth, projectController.addRoleProjects);
+route.patch(
+  "/api/new-completedimages/:id",
+  auth,
+  projectController.addCompletedProjects
+);
 module.exports = route;

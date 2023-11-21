@@ -239,8 +239,8 @@ const userController = {
   info: async (req, res) => {
     try {
       const user = await User.findById(req.user.id)
-        ?.populate("skills")
-        ?.populate("badge");
+        .populate("skills")
+        .populate("badge");
       // console.log(user);
       return res.status(200).json(user);
     } catch (err) {
@@ -303,11 +303,11 @@ const userController = {
   },
 
   update_pesonal: async (req, res) => {
-    const { first_name, last_name, contact, address, age } = req.body;
+    const { first_name, last_name, contact, address, age, school } = req.body;
     try {
       await User.findOneAndUpdate(
         { _id: req.user.id },
-        { first_name, last_name, contact, address, age }
+        { first_name, last_name, contact, address, age, school }
       );
 
       return res.status(200).json({ msg: "Updated successfully" });

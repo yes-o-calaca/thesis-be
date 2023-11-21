@@ -52,20 +52,60 @@ const paymentController = {
     try {
       const {
         donation_mode,
-        donation_amount,
         donation_date,
-        donation_receipt,
+        image,
+        type,
+        name,
+        description,
+        quantity,
+        project,
+        approved,
       } = req.body;
 
       const newDonor = new Donation({
         donator: req.user.id,
-        donation_mode,
+        donation_mode:
+          type === "cash" ? donation_mode : "65459b8dc8c146c69c429b84",
         donation_date,
-        donation_amount,
-        donation_receipt,
+        image,
+        project,
+        type,
+        name,
+        description,
+        quantity,
+        approved,
       });
-      await newDonor.save();
 
+      await newDonor.save();
+      return res.status(200).json({ msg: "Donation Submitted" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  addDonationAnonymous: async (req, res) => {
+    try {
+      const {
+        donation_date,
+        image,
+        type,
+        name,
+        description,
+        project,
+        quantity,
+      } = req.body;
+
+      const newDonor = new Donation({
+        donation_date,
+        project,
+        image,
+        type,
+        name,
+        description,
+        quantity,
+      });
+
+      await newDonor.save();
       return res.status(200).json({ msg: "Donation Submitted" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -73,18 +113,16 @@ const paymentController = {
   },
 
   updateDonation: async (req, res) => {
-    const {user} = req.body;
+    const { user } = req.body;
     try {
       await Donation.findByIdAndUpdate(req.params.id, {
         approved: true,
       });
-      const email = user.email;
-      const name = user.first_name + " " + user.last_name;
-
-      const ress = sendemailApproveDonation(email, name);
-      console.log(ress);
-
-      console.log(user);
+      if (user) {
+        const email = user.email;
+        const name = user?.first_name + " " + user?.last_name;
+        sendemailApproveDonation(email, name);
+      }
       return res.status(200).json({ msg: "Donation Approved" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
@@ -94,8 +132,8 @@ const paymentController = {
   getDonation: async () => {
     try {
       const allDonation = await Donation.find()
-        .populate("donator")
-        .populate("donation_mode");
+        ?.populate("donator")
+        ?.populate("donation_mode");
       return allDonation;
     } catch (error) {
       return error;

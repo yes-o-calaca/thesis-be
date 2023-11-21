@@ -12,6 +12,8 @@ route.patch("/api/auth/update-payment", auth, paymentController.updatePayment);
 
 //donation
 route.post("/api/auth/donate", auth, paymentController.addDonation);
+
+route.post("/api/auth/donate-anonymous", paymentController.addDonationAnonymous);
 route.patch(
   "/api/auth/update-donate/:id",
   auth,

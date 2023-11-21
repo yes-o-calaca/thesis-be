@@ -197,6 +197,15 @@ mongoose
           socket.emit("getPartnerError", { error });
         }
       });
+
+      socket.on("getNotif", async () => {
+        try {
+          const allNotif = await projectController.getVolunteerNotif();
+          socket.emit("getNotifSuccess", { allNotif });
+        } catch (error) {
+          socket.emit("getNotifError", { error });
+        }
+      });
     });
 
     server.listen(process.env.PORT || 3000, () => {

@@ -39,6 +39,7 @@ const projectSchema = new mongoose.Schema(
     volunteers: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
     feedbacks: [{ type: mongoose.Schema.ObjectId, ref: "Feedback" }],
     status: { type: String, default: "pending" },
+    completed_project_image: { type: Array },
   },
   { timestamps: true }
 );

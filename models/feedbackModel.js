@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 const feedbackSchema = new mongoose.Schema(
   {
+    feedbackAnswers: { type: Object },
     feedback: {
       type: String,
     },
