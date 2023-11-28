@@ -35,6 +35,7 @@ const projectSchema = new mongoose.Schema(
     type: {
       type: String,
     },
+    project_update: { type: String },
     skill_required: [{ type: mongoose.Schema.ObjectId, ref: "Skill" }],
     volunteers: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
     feedbacks: [{ type: mongoose.Schema.ObjectId, ref: "Feedback" }],

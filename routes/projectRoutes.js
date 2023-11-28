@@ -33,6 +33,8 @@ route.patch(
 );
 
 route.patch("/api/new-role/:id", auth, projectController.addRoleProjects);
+route.get("/api/get-role/:id", auth, projectController.getRoleProjects);
+
 route.patch(
   "/api/new-completedimages/:id",
   auth,

@@ -513,7 +513,7 @@ const sendemailApproveDonation = (to, name) => {
   });
 };
 
-const sendNotifRole = (to, name, mes) => {
+const sendNotifRole = (to, name, mes, project_title) => {
   oauth2client.setCredentials({
     refresh_token: G_REFRESH_TOKEN,
   });
@@ -612,8 +612,261 @@ const sendNotifRole = (to, name, mes) => {
                  
                     <h2>Dear ${name},</h2>
                     <h2>
-                    You have been asigned to a role of an ${mes} of an upcoming project. Visit your profile for more details
+                    You have been asigned to a role of an ${mes} of an upcoming project entitled ${project_title}. Visit your profile for more details
                     </h2>
+                  </td>
+                </tr>
+                <tr></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>    
+`,
+  };
+
+  smtpTransport.sendMail(mailOptions, (err, info) => {
+    if (err) return { err };
+    return info;
+  });
+};
+
+const sendAnnouncement = (
+  to,
+  name,
+  project_name,
+  announcement_title,
+  announcement_img
+) => {
+  oauth2client.setCredentials({
+    refresh_token: G_REFRESH_TOKEN,
+  });
+  const accessToken = oauth2client.getAccessToken();
+  const smtpTransport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: ADMIN_EMAIL,
+      clientId: G_CLIENT_ID,
+      clientSecret: G_CLIENT_SECRET,
+      refreshToken: G_REFRESH_TOKEN,
+      accessToken,
+    },
+  });
+  const mailOptions = {
+    from: "Yes-O-Calaca.org",
+    to: to,
+    subject: "Announcement",
+    html: `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <style>
+          body {
+            width: 100vw;
+            background-color: #d1d5db;
+            font-family: "Roboto", sans-serif;
+            font-size: 10px;
+            color: black;
+          }
+          table.container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: white;
+          }
+          table.wrapper {
+            width: 100%;
+            padding: 0 15px;
+          }
+          table.card {
+            width: 100%;
+            padding: 20px;
+          }
+          span {
+            color: #15803d;
+          }
+          .button-container {
+            text-align: center;
+          }
+          button {
+            padding: 1em 2em;
+            background-color: #047857;
+            border: 0;
+            margin-top: 30px;
+            cursor: pointer;
+          }
+          button:hover {
+            background-color: #15803d;
+          }
+          .button-container button a {
+            text-decoration: none;
+            color: white;
+          }
+          h1,
+          h2,
+          p {
+            margin: 10px 0;
+            color: black !important;
+          }
+          h2,
+          p {
+            font-weight: normal;
+          }
+          .heading {
+            height: 60px;
+            background-color: #15803d;
+          }
+        </style>
+      </head>
+      <body>
+        <table class="container">
+          <tr>
+            <td class="heading"></td>
+          </tr>
+          <tr>
+            <td class="wrapper">
+              <table class="card">
+                <tr>
+                  <td>
+                 
+                    <h2>Dear ${name},</h2>
+                    <h2>
+                  New Announcement for project ${project_name}
+                    </h2>
+                  <h2>
+                 ${announcement_title}
+                    </h2>
+                    <img src="${announcement_img}"/>
+                  </td>
+                </tr>
+                <tr></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>    
+`,
+  };
+
+  smtpTransport.sendMail(mailOptions, (err, info) => {
+    if (err) return { err };
+    return info;
+  });
+};
+
+const sendUpdateProject = (to, name, project_name, project_update) => {
+  oauth2client.setCredentials({
+    refresh_token: G_REFRESH_TOKEN,
+  });
+  const accessToken = oauth2client.getAccessToken();
+  const smtpTransport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: ADMIN_EMAIL,
+      clientId: G_CLIENT_ID,
+      clientSecret: G_CLIENT_SECRET,
+      refreshToken: G_REFRESH_TOKEN,
+      accessToken,
+    },
+  });
+  const mailOptions = {
+    from: "Yes-O-Calaca.org",
+    to: to,
+    subject: "Update Project Notification",
+    html: `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <style>
+          body {
+            width: 100vw;
+            background-color: #d1d5db;
+            font-family: "Roboto", sans-serif;
+            font-size: 10px;
+            color: black;
+          }
+          table.container {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: white;
+          }
+          table.wrapper {
+            width: 100%;
+            padding: 0 15px;
+          }
+          table.card {
+            width: 100%;
+            padding: 20px;
+          }
+          span {
+            color: #15803d;
+          }
+          .button-container {
+            text-align: center;
+          }
+          button {
+            padding: 1em 2em;
+            background-color: #047857;
+            border: 0;
+            margin-top: 30px;
+            cursor: pointer;
+          }
+          button:hover {
+            background-color: #15803d;
+          }
+          .button-container button a {
+            text-decoration: none;
+            color: white;
+          }
+          h1,
+          h2,
+          p {
+            margin: 10px 0;
+            color: black !important;
+          }
+          h2,
+          p {
+            font-weight: normal;
+          }
+          .heading {
+            height: 60px;
+            background-color: #15803d;
+          }
+        </style>
+      </head>
+      <body>
+        <table class="container">
+          <tr>
+            <td class="heading"></td>
+          </tr>
+          <tr>
+            <td class="wrapper">
+              <table class="card">
+                <tr>
+                  <td>
+                 
+                    <h2>Dear ${name},</h2>
+                    <h2>
+                This is to announce that the project ${project_name} is updated with the following reason:
+                    </h2>
+                  <h2>
+                 ${project_update}
+                    </h2>
+                    <h2>For more details about the project changes you can visit the website.</h2>
+                   
                   </td>
                 </tr>
                 <tr></tr>
@@ -638,4 +891,6 @@ module.exports = {
   sendemailApproveDonation,
   sendUpdateProjectStatus,
   sendNotifRole,
+  sendAnnouncement,
+  sendUpdateProject,
 };

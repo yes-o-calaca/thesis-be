@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 const donationSchema = new mongoose.Schema({
   donator: { type: mongoose.Schema.ObjectId, ref: "User" },
-  project: { type: mongoose.Schema.ObjectId, ref: "Payment" },
+  project: { type: mongoose.Schema.ObjectId, ref: "Project" },
   donation_mode: { type: mongoose.Schema.ObjectId, ref: "Payment" },
   donation_date: { type: Date },
   type: {

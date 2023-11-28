@@ -133,7 +133,8 @@ const paymentController = {
     try {
       const allDonation = await Donation.find()
         ?.populate("donator")
-        ?.populate("donation_mode");
+        ?.populate("donation_mode")
+        .populate("project");
       return allDonation;
     } catch (error) {
       return error;

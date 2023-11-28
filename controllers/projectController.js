@@ -61,7 +61,6 @@ const projectController = {
         { $addToSet: { volunteers: req.user.id } },
         { new: true }
       );
-      completed_project_image;
 
       const notification = new Notification({
         project: req.params.id,
@@ -92,7 +91,7 @@ const projectController = {
 
   addRoleProjects: async (req, res) => {
     try {
-      const { role, volunteerId } = req.body;
+      const { role, volunteerId, project_title } = req.body;
 
       const isRole = await VolunteerRole.findOne({
         project: req.params.id,
@@ -119,8 +118,17 @@ const projectController = {
       const name = user.first_name + " " + user.last_name;
       const email = user.email;
 
-      sendMail.sendNotifRole(email, name, role);
+      sendMail.sendNotifRole(email, name, role, project_title);
       return res.status(200).json({ msg: "Role Added successfully" });
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  getRoleProjects: async (req, res) => {
+    try {
+      const responseData = await VolunteerRole.find({ project: req.params.id });
+      return res.status(200).json(responseData);
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -193,6 +201,7 @@ const projectController = {
         address,
         gender,
         type,
+        project_update,
       } = req.body;
 
       const projectId = req.params.id;
@@ -209,6 +218,7 @@ const projectController = {
         address,
         gender,
         type,
+        project_update,
       };
 
       const skillData = skill_required;
@@ -223,6 +233,40 @@ const projectController = {
         });
       } else {
         await Project.findByIdAndUpdate(projectId, updateFields);
+      }
+
+      console.log(project_update);
+      if (project_update) {
+        const result = await Project.findById(req.params.id).populate(
+          "volunteers"
+        );
+
+        const volunteers = result.volunteers.map((volunteer) => volunteer._id);
+
+        const uniqueUserIds = new Set();
+
+        result.volunteers.forEach((volunteer) => {
+          uniqueUserIds.add(volunteer._id.toString());
+        });
+
+        const volunteerIds = Array.from(uniqueUserIds);
+
+        const users = await User.find({
+          _id: { $in: volunteerIds },
+        });
+
+        users.forEach((user) => {
+          try {
+            sendMail.sendUpdateProject(
+              user.email,
+              user.first_name + " " + user.last_name,
+              project_title,
+              project_update
+            );
+          } catch (error) {
+            console.error("Error sending email:", error);
+          }
+        });
       }
 
       res.status(200).json({ msg: "Project Updated Successfully" });
